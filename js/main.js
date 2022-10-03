@@ -3,15 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let guessedWords = [[]];
   let availableSpace = 1;
+  let word = 'dairy';
 
   const keys = document.querySelectorAll('.keyboard-row button');
-
-  for (let index = 0; index < keys.length; index++) {
-    keys[index].onclick = ({ target }) => {
-      const letter = target.getAttribute('data-key');
-      updateGuessedWords(letter);
-    };
-  }
 
   function getCurrentWordArray() {
     const numberOfGuessedWords = guessedWords.length;
@@ -22,9 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentWordArray = getCurrentWordArray();
     if (currentWordArray && currentWordArray.length < 5) {
       currentWordArray.push(letter);
-      const availableSpaceEl = document.getElementById(String(1));
+      const availableSpaceEl = document.getElementById(String(availableSpace));
       availableSpace = availableSpace + 1;
       availableSpaceEl.textContent = letter;
+    }
+  }
+
+  function handleSubmitWord() {
+    const currentWordArray = getCurrentWordArray();
+    if (currentWordArray.length !== 5) {
+      window.alert('Word must be 5 letters');
+    }
+    const currentWord = currentWordArray.join('');
+
+    if (currentWord == word) {
+      window.alert('Congratulations!');
     }
   }
 
@@ -37,5 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
       square.setAttribute('id', index + 1);
       gameBoard.appendChild(square);
     }
+  }
+  for (let index = 0; index < keys.length; index++) {
+    keys[index].onclick = ({ target }) => {
+      const letter = target.getAttribute('data-key');
+      if (letter === 'enter') {
+        handleSubmitWord();
+        return;
+      }
+      updateGuessedWords(letter);
+    };
   }
 });
