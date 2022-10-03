@@ -3,7 +3,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let guessedWords = [[]];
   let availableSpace = 1;
-  let word = 'dairy';
+  let word = randomWordService();
+
+  console.log(word);
+
+  function randomWordService() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open(
+      'GET',
+      'https://random-word-api.herokuapp.com/word?length=5',
+      false
+    ); // false for synchronous request
+    xmlHttp.send(null);
+    let wordx = xmlHttp.responseText
+      .replace(/['"]+/g, '')
+      .replace(/\[/g, '')
+      .replace(/\]/g, '');
+    return wordx;
+  }
+
   let gussedWordCount = 0;
 
   const keys = document.querySelectorAll('.keyboard-row button');
